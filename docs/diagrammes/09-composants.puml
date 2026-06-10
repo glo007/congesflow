@@ -1,0 +1,23 @@
+@startuml composants
+' Diagramme de composants - CongesFlow
+skinparam componentStyle rectangle
+
+package "Navigateur" {
+  [SPA React\n(TypeScript)] as SPA
+}
+
+package "Serveur applicatif" {
+  [API REST FastAPI] as API
+  [Module Auth\n(JWT + RBAC)] as AUTH
+  [Logique métier\n(conges.py)] as BIZ
+  [ORM SQLAlchemy] as ORM
+}
+
+database "PostgreSQL" as DB
+
+SPA -down-> API : HTTPS / JSON\n(REST)
+API ..> AUTH : utilise
+API ..> BIZ : utilise
+API ..> ORM : utilise
+ORM -down-> DB : SQL (requêtes préparées)
+@enduml

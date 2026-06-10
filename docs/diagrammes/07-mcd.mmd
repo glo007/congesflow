@@ -1,0 +1,50 @@
+%% Modèle Conceptuel de Données (MCD) - CongesFlow
+erDiagram
+    SERVICE ||--o{ EMPLOYE : "regroupe"
+    EMPLOYE ||--o{ EMPLOYE : "manage"
+    EMPLOYE ||--o{ DEMANDE_CONGE : "pose"
+    EMPLOYE ||--o{ SOLDE_CONGE : "possède"
+    TYPE_ABSENCE ||--o{ DEMANDE_CONGE : "qualifie"
+    TYPE_ABSENCE ||--o{ SOLDE_CONGE : "qualifie"
+
+    SERVICE {
+        int id PK
+        string nom
+    }
+    EMPLOYE {
+        int id PK
+        string nom
+        string prenom
+        string email UK
+        string mot_de_passe_hash
+        string role
+        date date_embauche
+        int service_id FK
+        int manager_id FK
+    }
+    TYPE_ABSENCE {
+        int id PK
+        string code UK
+        string libelle
+    }
+    SOLDE_CONGE {
+        int id PK
+        int employe_id FK
+        int type_absence_id FK
+        int annee
+        float jours_acquis
+        float jours_pris
+    }
+    DEMANDE_CONGE {
+        int id PK
+        int employe_id FK
+        int type_absence_id FK
+        date date_debut
+        date date_fin
+        float nb_jours_ouvres
+        string motif
+        string statut
+        string commentaire_manager
+        int valideur_id FK
+        datetime created_at
+    }

@@ -1,0 +1,22 @@
+@startuml deploiement
+' Diagramme de déploiement - CongesFlow (conteneurisé)
+skinparam node {
+  BackgroundColor #f7f9fc
+}
+
+node "Poste client" {
+  artifact "Navigateur web" as nav
+}
+
+node "Hôte Docker" {
+  node "Conteneur frontend\n(Nginx + build React)" as front
+  node "Conteneur backend\n(Uvicorn + FastAPI)" as back
+  node "Conteneur db\n(PostgreSQL 16)" as db
+  database "Volume pgdata" as vol
+}
+
+nav --> front : HTTPS (443)
+front --> back : HTTP (8000) /api
+back --> db : TCP 5432
+db --> vol : persistance
+@enduml

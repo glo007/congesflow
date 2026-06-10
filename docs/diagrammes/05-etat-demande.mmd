@@ -1,0 +1,13 @@
+%% Diagramme d'état-transition - Cycle de vie d'une demande de congé
+stateDiagram-v2
+    [*] --> SOUMISE : création par le salarié
+    SOUMISE --> VALIDEE : manager valide / décrémente le solde
+    SOUMISE --> REFUSEE : manager refuse (+ commentaire)
+    SOUMISE --> ANNULEE : salarié annule
+    VALIDEE --> ANNULEE : salarié annule / ré-incrémente le solde
+    VALIDEE --> [*]
+    REFUSEE --> [*]
+    ANNULEE --> [*]
+
+    note right of REFUSEE : état final
+    note right of ANNULEE : état final

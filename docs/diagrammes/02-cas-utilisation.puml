@@ -1,0 +1,43 @@
+@startuml cas-utilisation
+' Diagramme de cas d'utilisation - CongesFlow
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor "Salarié" as S
+actor "Manager" as M
+actor "RH / Admin" as RH
+
+' Heritage des roles : Manager et RH font tout ce que fait un Salarie
+M --|> S
+RH --|> M
+
+rectangle "CongésFlow" {
+  usecase "S'authentifier" as UC0
+  usecase "Poser une demande de congé" as UC1
+  usecase "Consulter mon solde" as UC2
+  usecase "Consulter mes demandes" as UC3
+  usecase "Annuler une demande" as UC4
+  usecase "Valider une demande" as UC5
+  usecase "Refuser une demande" as UC6
+  usecase "Lister les demandes de l'équipe" as UC7
+  usecase "Gérer les soldes" as UC8
+  usecase "Gérer les employés" as UC9
+}
+
+S --> UC0
+S --> UC1
+S --> UC2
+S --> UC3
+S --> UC4
+
+M --> UC5
+M --> UC6
+M --> UC7
+
+RH --> UC8
+RH --> UC9
+
+UC1 ..> UC0 : <<include>>
+UC5 ..> UC0 : <<include>>
+@enduml

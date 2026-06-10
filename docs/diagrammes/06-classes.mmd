@@ -1,0 +1,59 @@
+%% Diagramme de classes - CongesFlow (modèle de domaine)
+classDiagram
+    class Employe {
+        +int id
+        +string nom
+        +string prenom
+        +string email
+        +string mot_de_passe_hash
+        +Role role
+        +date date_embauche
+    }
+    class Service {
+        +int id
+        +string nom
+    }
+    class TypeAbsence {
+        +int id
+        +string code
+        +string libelle
+    }
+    class SoldeConge {
+        +int id
+        +int annee
+        +float jours_acquis
+        +float jours_pris
+        +jours_restants() float
+    }
+    class DemandeConge {
+        +int id
+        +date date_debut
+        +date date_fin
+        +float nb_jours_ouvres
+        +string motif
+        +StatutDemande statut
+        +string commentaire_manager
+        +datetime created_at
+    }
+    class Role {
+        <<enumeration>>
+        SALARIE
+        MANAGER
+        RH
+    }
+    class StatutDemande {
+        <<enumeration>>
+        SOUMISE
+        VALIDEE
+        REFUSEE
+        ANNULEE
+    }
+
+    Service "1" o-- "*" Employe : regroupe
+    Employe "0..1" --> "*" Employe : manage
+    Employe "1" --> "*" DemandeConge : pose
+    Employe "1" --> "*" SoldeConge : possède
+    DemandeConge "*" --> "1" TypeAbsence : concerne
+    SoldeConge "*" --> "1" TypeAbsence : porte sur
+    Employe --> Role
+    DemandeConge --> StatutDemande

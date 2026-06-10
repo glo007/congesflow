@@ -1,0 +1,24 @@
+%% Diagramme de séquence - Création d'une demande de congé
+sequenceDiagram
+    actor Salarie
+    participant Front as Front React
+    participant API as API FastAPI
+    participant Auth as Sécurité (JWT/RBAC)
+    participant DB as PostgreSQL
+
+    Salarie->>Front: Remplit le formulaire et valide
+    Front->>API: POST /api/demandes (JWT + payload)
+    API->>Auth: Vérifie le token et le rôle
+    Auth-->>API: Employé authentifié
+    API->>API: compter_jours_ouvres(debut, fin)
+    API->>DB: SELECT solde de l'employé
+    DB-->>API: solde restant
+    alt Solde insuffisant
+        API-->>Front: 400 Solde insuffisant
+        Front-->>Salarie: Message d'erreur
+    else Solde OK
+        API->>DB: INSERT demande (statut=SOUMISE)
+        DB-->>API: demande créée
+        API-->>Front: 201 Created (demande)
+        Front-->>Salarie: Demande enregistrée
+    end

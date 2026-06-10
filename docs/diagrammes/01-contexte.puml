@@ -1,0 +1,21 @@
+@startuml contexte
+' Diagramme de contexte - CongesFlow
+left to right direction
+skinparam actorStyle awesome
+
+actor "Salarié" as S
+actor "Manager" as M
+actor "RH / Admin" as RH
+
+rectangle "Système CongésFlow" as SYS {
+}
+
+S --> SYS : pose / annule des demandes,\nconsulte son solde
+M --> SYS : valide / refuse les demandes\nde son équipe
+RH --> SYS : gère les soldes,\nsupervise toutes les demandes
+
+note bottom of SYS
+  Application web : front React (SPA)
+  + API REST FastAPI + base PostgreSQL
+end note
+@enduml

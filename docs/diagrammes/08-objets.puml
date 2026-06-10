@@ -1,0 +1,37 @@
+@startuml objets
+' Diagramme d'objets - instantané (ex : Léa pose une demande validée par Paul)
+object "lea : Employe" as lea {
+  id = 3
+  nom = "Bernard"
+  prenom = "Léa"
+  role = SALARIE
+}
+object "paul : Employe" as paul {
+  id = 2
+  nom = "Durand"
+  prenom = "Paul"
+  role = MANAGER
+}
+object "cp : TypeAbsence" as cp {
+  code = "CP"
+  libelle = "Congés payés"
+}
+object "soldeLea : SoldeConge" as solde {
+  annee = 2026
+  jours_acquis = 25
+  jours_pris = 3
+}
+object "d1 : DemandeConge" as d1 {
+  date_debut = 2026-06-15
+  date_fin = 2026-06-17
+  nb_jours_ouvres = 3
+  statut = VALIDEE
+}
+
+lea --> paul : manager
+lea --> d1 : pose
+lea --> solde : possède
+d1 --> cp : concerne
+d1 --> paul : valideur
+solde --> cp : porte sur
+@enduml
