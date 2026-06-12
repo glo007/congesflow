@@ -20,3 +20,6 @@ dist/
 .vscode/
 .idea/
 .DS_Store
+
+# Fichiers temporaires Office (verrous ~$...)
+~$*

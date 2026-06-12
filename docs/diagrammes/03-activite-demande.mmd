@@ -1,14 +1,14 @@
 %% Diagramme d'activité - Créer une demande de congé
 flowchart TD
     A([Début]) --> B[Le salarié saisit type, dates et motif]
-    B --> C{Dates valides ?\nfin >= début}
-    C -- Non --> E1[Erreur 400 : dates invalides]
-    C -- Oui --> D[Calcul des jours ouvrés\nhors week-ends]
-    D --> F{Au moins 1 jour ouvré ?}
-    F -- Non --> E2[Erreur 400 : aucun jour ouvré]
+    B --> C{Dates valides ?}
+    C -- Non --> E1[Erreur : dates invalides]
+    C -- Oui --> D[Calcul des jours ouvrés hors week-ends]
+    D --> F{Au moins un jour ouvré ?}
+    F -- Non --> E2[Erreur : aucun jour ouvré]
     F -- Oui --> G{Solde suffisant ?}
-    G -- Non --> E3[Erreur 400 : solde insuffisant]
-    G -- Oui --> H[Création de la demande\nstatut = SOUMISE]
+    G -- Non --> E3[Erreur : solde insuffisant]
+    G -- Oui --> H[Création de la demande - statut SOUMISE]
     H --> I[Notification au manager]
     I --> J([Fin])
     E1 --> J

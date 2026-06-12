@@ -1,7 +1,21 @@
 const pptxgen = require("pptxgenjs");
+const fs = require("fs");
+const path = require("path");
 const p = new pptxgen();
 p.defineLayout({ name: "W", width: 13.333, height: 7.5 });
 p.layout = "W";
+
+const DIMG = path.join(__dirname, "..", "docs", "diagrammes", "images");
+const pngSize = (f) => { const b = fs.readFileSync(f); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
+// place une image en la centrant dans une boîte (bx,by,bw,bh) en pouces, ratio conservé
+const imgFit = (s, name, bx, by, bw, bh) => {
+  const f = path.join(DIMG, name + ".png");
+  const { w, h } = pngSize(f);
+  const iw0 = w / 96, ih0 = h / 96;
+  const scale = Math.min(bw / iw0, bh / ih0);
+  const iw = iw0 * scale, ih = ih0 * scale;
+  s.addImage({ path: f, x: bx + (bw - iw) / 2, y: by + (bh - ih) / 2, w: iw, h: ih });
+};
 
 // Palette (Ocean — professionnel, sobre)
 const NAVY = "0A1A2F", PRIMARY = "0B5394", TEAL = "1C7293", MIST = "EAF1F6";
@@ -147,20 +161,38 @@ titleSlide();
   s.addText("• Docker + docker-compose\n• CI GitHub Actions\n• Git (main / develop / feature)\n• pytest + Vitest\n• Documentation OpenAPI auto", { x: 9.3, y: 2.5, w: 3.1, h: 3.6, fontFace: FB, fontSize: 13, color: INK, valign: "top", lineSpacingMultiple: 1.3 });
 })();
 
-// 7. Conception / modélisation
+// 7. Conception / modélisation — vue d'ensemble
 (() => {
-  const s = p.addSlide(); header(s, "05 · Conception", "Modélisation UML & données");
-  const tiles = ["Cas d'utilisation", "Séquence", "Classes", "État-transition", "MCD / MLD", "Composants & déploiement"];
+  const s = p.addSlide(); header(s, "05 · Conception", "Modélisation : 10 diagrammes UML / Merise");
+  const tiles = [
+    ["Contexte", "01-contexte"], ["Cas d'utilisation", "02-cas-utilisation"],
+    ["Activité", "03-activite-demande"], ["Séquence", "04-sequence-creation"],
+    ["État-transition", "05-etat-demande"], ["Classes", "06-classes"],
+    ["MCD / Merise", "07-mcd"], ["Objets", "08-objets"],
+    ["Composants", "09-composants"], ["Déploiement", "10-deploiement"],
+  ];
   tiles.forEach((t, i) => {
-    const col = i % 3, row = Math.floor(i / 3);
-    const x = 0.7 + col * 4.05, y = 1.8 + row * 1.5;
-    card(s, x, y, 3.75, 1.25);
-    iconDot(s, x + 0.25, y + 0.37, "▦", TEAL);
-    s.addText(t, { x: x + 0.95, y, w: 2.7, h: 1.25, valign: "middle", fontFace: FB, fontSize: 14, bold: true, color: INK });
+    const col = i % 5, row = Math.floor(i / 5);
+    const x = 0.7 + col * 2.42, y = 1.9 + row * 2.4;
+    card(s, x, y, 2.25, 2.15);
+    imgFit(s, t[1], x + 0.12, y + 0.12, 2.01, 1.55);
+    s.addText(t[0], { x: x + 0.05, y: y + 1.72, w: 2.15, h: 0.35, align: "center", valign: "middle", fontFace: FB, fontSize: 11, bold: true, color: INK });
   });
-  s.addText("10 diagrammes produits — sources Mermaid / PlantUML dans le dépôt (docs/diagrammes/).", { x: 0.7, y: 5.3, w: 11.9, h: 0.5, fontFace: FB, fontSize: 14, italic: true, color: MUTE });
-  shotBox(s, 0.7, 5.85, 11.9, 1.1, "Conseil : insérez ici votre diagramme de classes ou votre MCD (image exportée).");
+  s.addText("Sources Mermaid / PlantUML versionnées dans le dépôt (docs/diagrammes/). Diagrammes en grand sur les slides suivantes.", { x: 0.7, y: 6.85, w: 11.9, h: 0.4, fontFace: FB, fontSize: 12, italic: true, color: MUTE });
 })();
+
+// 7bis. Slides dédiées aux diagrammes clés (image en grand)
+const grandsDiagrammes = [
+  ["05 · Conception", "Diagramme de cas d'utilisation", "02-cas-utilisation"],
+  ["05 · Conception", "Modèle conceptuel de données (MCD)", "07-mcd"],
+  ["05 · Conception", "Diagramme de classes", "06-classes"],
+  ["05 · Conception", "Cycle de vie d'une demande (état-transition)", "05-etat-demande"],
+  ["04 · Architecture", "Diagramme de déploiement", "10-deploiement"],
+];
+grandsDiagrammes.forEach(([k, titre, name]) => {
+  const s = p.addSlide(); header(s, k, titre);
+  imgFit(s, name, 0.7, 1.6, 11.9, 5.5);
+});
 
 // 8. Focus métier
 (() => {
