@@ -794,7 +794,7 @@ const chap4 = [
     ["Total", "21", "21 / 21 au vert"],
   ], [4626, 2200, 2200]),
   P(""),
-  shot("Fig.18 — Sortie de l'exécution des tests (pytest et Vitest)."),
+  screenshot("Fig.18", "Sortie de l'exécution des tests (pytest) — 26 tests au vert", "fig18-tests.png"),
   H2("4.6 Intégration continue (CI)"),
   P("Un pipeline GitHub Actions exécute automatiquement l'ensemble des tests à chaque push sur les branches main et develop, garantissant qu'aucune régression n'est introduite. Le pipeline comporte deux travaux : l'un pour le back-end (pytest), l'autre pour le front-end (build et tests)."),
   ...code(".github/workflows/ci.yml (extrait)",
