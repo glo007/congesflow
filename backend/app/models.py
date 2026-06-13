@@ -116,3 +116,16 @@ class DemandeConge(Base):
     )
     type_absence: Mapped["TypeAbsence"] = relationship()
     valideur: Mapped["Employe"] = relationship(foreign_keys=[valideur_id])
+
+    # Proprietes exposees dans l'API : identifient le demandeur (email + nom)
+    @property
+    def employe_email(self) -> str | None:
+        return self.employe.email if self.employe else None
+
+    @property
+    def employe_nom(self) -> str | None:
+        return self.employe.nom if self.employe else None
+
+    @property
+    def employe_prenom(self) -> str | None:
+        return self.employe.prenom if self.employe else None

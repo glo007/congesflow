@@ -21,6 +21,9 @@ export interface Solde {
 export interface Demande {
   id: number;
   employe_id: number;
+  employe_email: string | null;
+  employe_nom: string | null;
+  employe_prenom: string | null;
   type_absence_id: number;
   date_debut: string;
   date_fin: string;

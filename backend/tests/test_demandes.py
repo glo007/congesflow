@@ -32,6 +32,47 @@ def test_salarie_cree_une_demande(client):
     assert resp.status_code == 201, resp.text
     assert resp.json()["nb_jours_ouvres"] == 3
     assert resp.json()["statut"] == "SOUMISE"
+    # l'email du demandeur et le motif remontent dans la reponse
+    assert resp.json()["employe_email"] == "salarie@congesflow.fr"
+    assert resp.json()["motif"] == "Vacances"
+
+
+def test_motif_obligatoire(client):
+    token = login(client, "salarie@congesflow.fr")
+    lundi = _prochain_lundi()
+    resp = client.post(
+        "/api/demandes",
+        headers=auth_header(token),
+        json={
+            "type_absence_id": 1,
+            "date_debut": lundi.isoformat(),
+            "date_fin": (lundi + timedelta(days=2)).isoformat(),
+        },  # pas de motif
+    )
+    assert resp.status_code == 422  # erreur de validation : motif requis
+
+
+def test_manager_ne_valide_pas_sa_propre_demande(client):
+    tok_mgr = login(client, "manager@congesflow.fr")
+    lundi = _prochain_lundi()
+    creation = client.post(
+        "/api/demandes",
+        headers=auth_header(tok_mgr),
+        json={
+            "type_absence_id": 1,
+            "date_debut": lundi.isoformat(),
+            "date_fin": (lundi + timedelta(days=2)).isoformat(),
+            "motif": "Rendez-vous",
+        },
+    )
+    demande_id = creation.json()["id"]
+    # Le manager ne peut PAS valider sa propre demande
+    resp = client.patch(f"/api/demandes/{demande_id}/valider", headers=auth_header(tok_mgr))
+    assert resp.status_code == 403
+    # Mais le RH peut la valider
+    tok_rh = login(client, "rh@congesflow.fr")
+    resp_rh = client.patch(f"/api/demandes/{demande_id}/valider", headers=auth_header(tok_rh))
+    assert resp_rh.status_code == 200
 
 
 def test_demande_refusee_si_solde_insuffisant(client):
@@ -44,6 +85,7 @@ def test_demande_refusee_si_solde_insuffisant(client):
             "type_absence_id": 1,
             "date_debut": lundi.isoformat(),
             "date_fin": (lundi + timedelta(days=60)).isoformat(),  # > 25 jours ouvres
+            "motif": "Conges longs",
         },
     )
     assert resp.status_code == 400
@@ -67,6 +109,7 @@ def test_manager_valide_et_decremente_le_solde(client):
             "type_absence_id": 1,
             "date_debut": lundi.isoformat(),
             "date_fin": (lundi + timedelta(days=2)).isoformat(),  # 3 jours
+            "motif": "Vacances",
         },
     )
     demande_id = creation.json()["id"]
@@ -104,6 +147,7 @@ def test_transition_invalide_renvoie_409(client):
             "type_absence_id": 1,
             "date_debut": lundi.isoformat(),
             "date_fin": (lundi + timedelta(days=2)).isoformat(),
+            "motif": "Vacances",
         },
     )
     demande_id = creation.json()["id"]

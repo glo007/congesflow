@@ -53,13 +53,16 @@ class DemandeCreate(BaseModel):
     type_absence_id: int
     date_debut: date
     date_fin: date
-    motif: str | None = None
+    motif: str = Field(min_length=1)  # motif desormais obligatoire
 
 
 class DemandeOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     id: int
     employe_id: int
+    employe_email: str | None = None
+    employe_nom: str | None = None
+    employe_prenom: str | None = None
     type_absence_id: int
     date_debut: date
     date_fin: date

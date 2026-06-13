@@ -23,3 +23,6 @@ dist/
 
 # Fichiers temporaires Office (verrous ~$...)
 ~$*
+
+# Config locale Claude Code (non versionnée)
+.claude/

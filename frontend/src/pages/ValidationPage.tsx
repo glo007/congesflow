@@ -41,6 +41,7 @@ export default function ValidationPage() {
               <th className="px-4 py-3 font-semibold">Type</th>
               <th className="px-4 py-3 font-semibold">Période</th>
               <th className="px-4 py-3 font-semibold">Jours</th>
+              <th className="px-4 py-3 font-semibold">Motif</th>
               <th className="px-4 py-3 font-semibold">Statut</th>
               <th className="px-4 py-3 text-right font-semibold">Action</th>
             </tr>
@@ -48,10 +49,14 @@ export default function ValidationPage() {
           <tbody className="divide-y divide-slate-100">
             {demandes.data?.map((d) => (
               <tr key={d.id} className="hover:bg-slate-50/60">
-                <td className="px-4 py-3 font-medium text-ink">#{d.employe_id}</td>
+                <td className="px-4 py-3">
+                  <div className="font-medium text-ink">{d.employe_prenom} {d.employe_nom}</div>
+                  <div className="text-xs text-slate-400">{d.employe_email}</div>
+                </td>
                 <td className="px-4 py-3 text-slate-600">{libelleType(d.type_absence_id)}</td>
                 <td className="px-4 py-3 text-slate-600">{d.date_debut} → {d.date_fin}</td>
                 <td className="px-4 py-3 text-slate-600">{d.nb_jours_ouvres}</td>
+                <td className="max-w-[180px] truncate px-4 py-3 text-slate-600" title={d.motif ?? ""}>{d.motif}</td>
                 <td className="px-4 py-3"><StatutBadge statut={d.statut} /></td>
                 <td className="px-4 py-3">
                   <div className="flex justify-end gap-2">
@@ -67,7 +72,7 @@ export default function ValidationPage() {
             ))}
             {demandes.data?.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-12 text-center text-slate-400">
+                <td colSpan={7} className="px-4 py-12 text-center text-slate-400">
                   <IconInbox className="mx-auto mb-2 h-8 w-8 text-slate-300" />
                   Aucune demande en attente.
                 </td>

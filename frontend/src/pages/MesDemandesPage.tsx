@@ -82,8 +82,8 @@ export default function MesDemandesPage() {
             <input type="date" value={form.date_fin} onChange={(e) => setForm({ ...form, date_fin: e.target.value })} className="input" required />
           </div>
           <div className="sm:col-span-2">
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">Motif (optionnel)</label>
-            <input type="text" value={form.motif} onChange={(e) => setForm({ ...form, motif: e.target.value })} className="input" placeholder="Vacances, rendez-vous…" />
+            <label className="mb-1.5 block text-sm font-medium text-slate-700">Motif <span className="text-rose-500">*</span></label>
+            <input type="text" value={form.motif} onChange={(e) => setForm({ ...form, motif: e.target.value })} className="input" placeholder="Vacances, rendez-vous médical…" required />
           </div>
           <div className="sm:col-span-2">
             <button type="submit" disabled={creer.isPending} className="btn-primary">

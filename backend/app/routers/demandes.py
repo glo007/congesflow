@@ -111,6 +111,14 @@ def _appliquer_decision(
     if demande is None:
         raise HTTPException(status_code=404, detail="Demande introuvable")
 
+    # Separation des responsabilites : un manager ne valide/refuse pas ses
+    # propres demandes (c'est au RH ou au N+1 de le faire).
+    if cible in (StatutDemande.VALIDEE, StatutDemande.REFUSEE) and demande.employe_id == user.id:
+        raise HTTPException(
+            status_code=403,
+            detail="Vous ne pouvez pas valider ou refuser votre propre demande.",
+        )
+
     # Verrou machine a etats (Bloc 3)
     if not transition_possible(demande.statut, cible):
         raise HTTPException(
