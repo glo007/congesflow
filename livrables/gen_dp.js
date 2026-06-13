@@ -259,7 +259,8 @@ const annexes = [
   H2("Curriculum Vitae"),
   fill("[À COMPLÉTER : joindre votre CV.]"),
   H2("Annexes techniques"),
-  li("Dépôt GitHub du projet : [lien]."),
+  li("Dépôt GitHub du projet : https://github.com/glo007/congesflow"),
+  li("Application déployée en ligne : https://congesflow-web.onrender.com"),
   li("Dossier Projet complet (mémoire) joint séparément."),
   li("Diagrammes, scripts SQL et documentation d'API dans le dépôt (dossier docs/)."),
 ];

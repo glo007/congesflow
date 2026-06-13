@@ -6,16 +6,18 @@ p.defineLayout({ name: "W", width: 13.333, height: 7.5 });
 p.layout = "W";
 
 const DIMG = path.join(__dirname, "..", "docs", "diagrammes", "images");
+const SHOTS = path.join(__dirname, "..", "docs", "screenshots");
 const pngSize = (f) => { const b = fs.readFileSync(f); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
-// place une image en la centrant dans une boîte (bx,by,bw,bh) en pouces, ratio conservé
-const imgFit = (s, name, bx, by, bw, bh) => {
-  const f = path.join(DIMG, name + ".png");
+// place une image (chemin complet) en la centrant dans une boîte (bx,by,bw,bh), ratio conservé
+const imgFitPath = (s, f, bx, by, bw, bh) => {
   const { w, h } = pngSize(f);
   const iw0 = w / 96, ih0 = h / 96;
   const scale = Math.min(bw / iw0, bh / ih0);
   const iw = iw0 * scale, ih = ih0 * scale;
   s.addImage({ path: f, x: bx + (bw - iw) / 2, y: by + (bh - ih) / 2, w: iw, h: ih });
 };
+const imgFit = (s, name, bx, by, bw, bh) => imgFitPath(s, path.join(DIMG, name + ".png"), bx, by, bw, bh);
+const shotImg = (s, file, bx, by, bw, bh) => imgFitPath(s, path.join(SHOTS, file), bx, by, bw, bh);
 
 // Palette (Ocean — professionnel, sobre)
 const NAVY = "0A1A2F", PRIMARY = "0B5394", TEAL = "1C7293", MIST = "EAF1F6";
@@ -242,11 +244,17 @@ grandsDiagrammes.forEach(([k, titre, name]) => {
 
 // 10. Démonstration
 (() => {
-  const s = p.addSlide(); header(s, "08 · Démonstration", "L'application en fonctionnement");
-  shotBox(s, 0.7, 1.75, 5.9, 2.3, "Écran de connexion");
-  shotBox(s, 6.7, 1.75, 5.9, 2.3, "Tableau de bord salarié (soldes + demande)");
-  shotBox(s, 0.7, 4.25, 5.9, 2.3, "Espace de validation manager");
-  shotBox(s, 6.7, 4.25, 5.9, 2.3, "Documentation Swagger de l'API");
+  const s = p.addSlide(); header(s, "08 · Démonstration", "L'application en ligne — congesflow-web.onrender.com");
+  [
+    ["fig13-login.png", "Connexion", 0.7, 1.7],
+    ["fig14-mes-demandes.png", "Espace salarié", 6.7, 1.7],
+    ["fig15-validation.png", "Validation manager", 0.7, 4.2],
+    ["fig16-dashboard.png", "Tableau de bord", 6.7, 4.2],
+  ].forEach(([file, cap, x, y]) => {
+    card(s, x, y, 5.9, 2.4);
+    shotImg(s, file, x + 0.12, y + 0.12, 5.66, 1.9);
+    s.addText(cap, { x: x, y: y + 2.0, w: 5.9, h: 0.3, align: "center", fontFace: FB, fontSize: 12, bold: true, color: INK });
+  });
 })();
 
 // 11. Tests & qualité
@@ -306,7 +314,7 @@ grandsDiagrammes.forEach(([k, titre, name]) => {
   s.addText("Merci de votre attention", { x: 0.9, y: 2.8, w: 11.5, h: 1.0, fontFace: FH, fontSize: 44, bold: true, color: WHITE });
   s.addShape("line", { x: 0.95, y: 3.9, w: 3.0, h: 0, line: { color: ACCENT, width: 3 } });
   s.addText("Place à vos questions", { x: 0.9, y: 4.1, w: 11.5, h: 0.6, fontFace: FB, fontSize: 20, color: "AFC6DC", italic: true });
-  s.addText("CongésFlow · Démo : http://localhost:5173 · Dépôt : [lien GitHub]", { x: 0.9, y: 6.6, w: 11.5, h: 0.5, fontFace: FB, fontSize: 13, color: "8FA9C2" });
+  s.addText("App : congesflow-web.onrender.com   ·   Code : github.com/glo007/congesflow", { x: 0.9, y: 6.6, w: 11.5, h: 0.5, fontFace: FB, fontSize: 13, color: "8FA9C2" });
 })();
 
 p.writeFile({ fileName: __dirname + "/Presentation_Soutenance_CongesFlow.pptx" }).then((f) => console.log("OK", f));

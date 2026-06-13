@@ -8,6 +8,7 @@ const {
 
 const CONTENT_W = 9026;
 const IMG_DIR = path.join(__dirname, "..", "docs", "diagrammes", "images");
+const SCREEN_DIR = path.join(__dirname, "..", "docs", "screenshots");
 const pngSize = (file) => { const b = fs.readFileSync(file); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
 const border = { style: BorderStyle.SINGLE, size: 1, color: "B7C3D0" };
 const borders = { top: border, bottom: border, left: border, right: border };
@@ -69,6 +70,21 @@ const diagram = (fig, legende, fichier) => {
       children: [imgPara, new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `${fig} — ${legende}`, italics: true, size: 18, color: "44505F" })] })] })] })] });
 };
 
+// Capture d'ecran reelle de l'application (repli sur le placeholder si absente)
+const screenshot = (fig, legende, fichier) => {
+  const file = path.join(SCREEN_DIR, fichier);
+  if (!fs.existsSync(file)) return shot(`${fig} — ${legende}`);
+  const { w, h } = pngSize(file);
+  const scale = Math.min(560 / w, 620 / h, 1);
+  return new Table({ width: { size: CONTENT_W, type: WidthType.DXA }, columnWidths: [CONTENT_W],
+    rows: [new TableRow({ children: [new TableCell({ borders, width: { size: CONTENT_W, type: WidthType.DXA }, margins: { top: 120, bottom: 120, left: 120, right: 120 },
+      children: [
+        new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 },
+          children: [new ImageRun({ type: "png", data: fs.readFileSync(file), transformation: { width: Math.round(w * scale), height: Math.round(h * scale) }, altText: { title: fig, description: legende, name: fichier } })] }),
+        new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `${fig} — ${legende}`, italics: true, size: 18, color: "44505F" })] }),
+      ] })] })] });
+};
+
 const tableau = (headers, rows, widths) => new Table({
   width: { size: CONTENT_W, type: WidthType.DXA }, columnWidths: widths,
   rows: [
@@ -108,7 +124,8 @@ const cover = [
     ["Encadrant", "M'hand BOUFALA"],
     ["Année scolaire", "2025-2026"],
     ["Session d'examen", "Septembre 2026"],
-    ["Dépôt GitHub", "[lien du dépôt à insérer]"],
+    ["Dépôt GitHub", "https://github.com/glo007/congesflow"],
+    ["Application en ligne", "https://congesflow-web.onrender.com"],
   ], [3200, 5826]),
   pageBreak(),
 ];
@@ -677,13 +694,15 @@ const chap3 = [
   H3("3.7.3 Gestion de l'état serveur (React Query)"),
   P("La consommation de l'API s'appuie sur React Query, qui gère le cache, le rechargement et l'invalidation des données. Après création d'une demande, les requêtes des soldes et de l'historique sont automatiquement invalidées et rechargées, garantissant un affichage à jour."),
   P("Captures de l'application en fonctionnement :"),
-  shot("Fig.13 — Écran de connexion."),
+  screenshot("Fig.13", "Écran de connexion de l'application", "fig13-login.png"),
   P(""),
-  shot("Fig.14 — Tableau de bord salarié : soldes, formulaire de demande et historique."),
+  screenshot("Fig.14", "Espace salarié : soldes, formulaire de demande et historique", "fig14-mes-demandes.png"),
   P(""),
-  shot("Fig.15 — Espace manager : demandes à valider, avec les actions Valider / Refuser."),
+  screenshot("Fig.15", "Espace manager : demandes à valider (actions Valider / Refuser)", "fig15-validation.png"),
   P(""),
-  shot("Fig.16 — Documentation interactive de l'API (Swagger / OpenAPI)."),
+  screenshot("Fig.16", "Tableau de bord du manager : indicateurs et répartition des demandes", "fig16-dashboard.png"),
+  P(""),
+  screenshot("Fig.17", "Documentation interactive de l'API (Swagger / OpenAPI)", "fig18-swagger.png"),
 
   H2("3.8 Sécurité mise en œuvre et OWASP Top 10"),
   P("La sécurité a été intégrée à chaque couche. Le tableau suivant met en regard les principaux risques de l'OWASP Top 10 et les mesures prises dans CongésFlow."),
@@ -759,7 +778,7 @@ const chap4 = [
     ["Total", "21", "21 / 21 au vert"],
   ], [4626, 2200, 2200]),
   P(""),
-  shot("Fig.17 — Sortie de l'exécution des tests (pytest et Vitest)."),
+  shot("Fig.18 — Sortie de l'exécution des tests (pytest et Vitest)."),
   H2("4.6 Intégration continue (CI)"),
   P("Un pipeline GitHub Actions exécute automatiquement l'ensemble des tests à chaque push sur les branches main et develop, garantissant qu'aucune régression n'est introduite. Le pipeline comporte deux travaux : l'un pour le back-end (pytest), l'autre pour le front-end (build et tests)."),
   ...code(".github/workflows/ci.yml (extrait)",
@@ -887,9 +906,11 @@ const annexes = [
     ");"),
   H2("Annexe D — Documentation de l'API"),
   P("La documentation interactive de l'API (Swagger / OpenAPI) est générée automatiquement par FastAPI et accessible à l'adresse http://localhost:8000/docs."),
-  shot("Fig.18 — Vue d'ensemble des endpoints dans Swagger."),
+  P("La documentation Swagger est illustrée en Fig.17. Elle liste l'ensemble des endpoints, leurs paramètres et leurs réponses, et permet de les tester directement."),
   H2("Annexe E — Dépôt GitHub"),
-  P("Le code source complet du projet est disponible sur : [lien du dépôt à insérer]."),
+  P([B("Dépôt GitHub : "), R("https://github.com/glo007/congesflow")]),
+  P([B("Application déployée en ligne : "), R("https://congesflow-web.onrender.com")]),
+  P("Comptes de démonstration (mot de passe : Password123) : salarie@congesflow.fr, manager@congesflow.fr, rh@congesflow.fr."),
 ];
 
 // =====================================================================
