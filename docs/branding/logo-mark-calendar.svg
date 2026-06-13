@@ -1,0 +1,17 @@
+<svg width="96" height="96" viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brand2" x1="0" y1="0" x2="96" y2="96" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#4338CA"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="22" fill="url(#brand2)"/>
+  <!-- corps du calendrier -->
+  <rect x="26" y="30" width="44" height="40" rx="6" stroke="#FFFFFF" stroke-width="4"/>
+  <!-- ligne d'en-tete -->
+  <path d="M26 42H70" stroke="#FFFFFF" stroke-width="4"/>
+  <!-- anneaux -->
+  <path d="M37 24V34M59 24V34" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>
+  <!-- coche -->
+  <path d="M37 55L45 62L60 48" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

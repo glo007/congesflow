@@ -5,11 +5,25 @@ export default {
     extend: {
       colors: {
         brand: {
-          50: "#eef5ff",
-          500: "#3b6fe0",
-          600: "#2f59c2",
-          700: "#2747a0",
+          50: "#eef2ff",
+          100: "#e0e7ff",
+          200: "#c7d2fe",
+          400: "#818cf8",
+          500: "#6366f1",
+          600: "#4f46e5",
+          700: "#4338ca",
+          800: "#3730a3",
+          900: "#312e81",
         },
+        ink: "#1e293b",
+        navy: "#0f172a",
+      },
+      boxShadow: {
+        card: "0 1px 3px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.04)",
+        soft: "0 4px 16px rgba(15,23,42,0.08)",
+      },
+      fontFamily: {
+        sans: ["Inter", "system-ui", "Avenir", "Helvetica", "Arial", "sans-serif"],
       },
     },
   },

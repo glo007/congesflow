@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
-from app.routers import auth, demandes, users
+from app.routers import auth, demandes, stats, users
 from app.seed import seed_data
 
 
@@ -26,7 +26,9 @@ app = FastAPI(
 # Securite : CORS restreint au front local (a durcir en prod)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    # Autorise le front local (localhost / 127.0.0.1) et tout sous-domaine Render
+    # (deploiement). En production, on peut restreindre a l'origine exacte.
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1):\d+|https://[a-z0-9-]+\.onrender\.com",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -35,6 +37,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(demandes.router)
 app.include_router(users.router)
+app.include_router(stats.router)
 
 
 @app.get("/api/health", tags=["health"])

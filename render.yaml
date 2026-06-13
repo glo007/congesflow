@@ -1,0 +1,47 @@
+# Blueprint Render — déploiement complet de CongésFlow
+# (base PostgreSQL + API FastAPI + frontend React statique)
+# Doc : https://render.com/docs/blueprint-spec
+
+databases:
+  - name: congesflow-db
+    databaseName: congesflow
+    user: congesflow
+    plan: free
+
+services:
+  # --- Backend : API FastAPI (conteneur Docker) ---
+  - type: web
+    name: congesflow-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: congesflow-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true        # secret généré automatiquement par Render
+      - key: JWT_EXPIRE_MINUTES
+        value: "120"
+
+  # --- Frontend : application React (site statique) ---
+  - type: web
+    name: congesflow-web
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: congesflow-api
+          property: host           # nom d'hôte de l'API (le front ajoute https://)
+    routes:
+      # SPA : toutes les routes inconnues renvoient index.html (React Router)
+      - type: rewrite
+        source: /*
+        destination: /index.html

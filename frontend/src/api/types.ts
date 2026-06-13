@@ -37,3 +37,13 @@ export interface NouvelleDemande {
   date_fin: string;
   motif?: string;
 }
+
+export interface Stats {
+  en_attente: number;
+  validees: number;
+  refusees: number;
+  annulees: number;
+  total: number;
+  jours_valides_mois: number;
+  effectif: number;
+}

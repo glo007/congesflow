@@ -5,6 +5,8 @@ import pytest
 
 from app.business.conges import (
     compter_jours_ouvres,
+    feries_sur_periode,
+    jours_feries_france,
     solde_suffisant,
     transition_possible,
 )
@@ -30,6 +32,33 @@ class TestJoursOuvres:
     def test_date_fin_avant_debut_leve_erreur(self):
         with pytest.raises(ValueError):
             compter_jours_ouvres(date(2025, 6, 10), date(2025, 6, 2))
+
+
+class TestJoursFeries:
+    def test_feries_fixes_presents(self):
+        feries = jours_feries_france(2025)
+        assert date(2025, 1, 1) in feries    # Jour de l'an
+        assert date(2025, 5, 1) in feries     # Fete du travail
+        assert date(2025, 7, 14) in feries    # Fete nationale
+        assert date(2025, 12, 25) in feries   # Noel
+
+    def test_feries_mobiles_paques_2025(self):
+        # Paques 2025 = 20 avril -> lundi de Paques = 21 avril
+        feries = jours_feries_france(2025)
+        assert date(2025, 4, 21) in feries    # Lundi de Paques
+        assert date(2025, 5, 29) in feries    # Ascension
+        assert date(2025, 6, 9) in feries     # Lundi de Pentecote
+
+    def test_feries_exclus_du_decompte(self):
+        # jeudi 1er mai 2025 (ferie) sur la semaine du 28 avril au 2 mai
+        feries = jours_feries_france(2025)
+        # lun 28, mar 29, mer 30, jeu 1er (ferie), ven 2 -> 4 jours ouvres
+        assert compter_jours_ouvres(date(2025, 4, 28), date(2025, 5, 2), feries) == 4
+
+    def test_feries_sur_periode_couvre_les_annees(self):
+        feries = feries_sur_periode(date(2024, 12, 30), date(2025, 1, 2))
+        assert date(2025, 1, 1) in feries
+        assert date(2024, 12, 25) in feries
 
 
 class TestSolde:

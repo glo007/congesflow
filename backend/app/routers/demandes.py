@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from app.business.conges import (
     compter_jours_ouvres,
+    feries_sur_periode,
     solde_suffisant,
     transition_possible,
 )
@@ -35,8 +36,10 @@ def creer_demande(
     user: Employe = Depends(get_current_user),
 ):
     # Regle metier 1 : coherence des dates + calcul des jours ouvres
+    # (les week-ends ET les jours feries francais sont exclus du decompte)
     try:
-        nb_jours = compter_jours_ouvres(data.date_debut, data.date_fin)
+        feries = feries_sur_periode(data.date_debut, data.date_fin)
+        nb_jours = compter_jours_ouvres(data.date_debut, data.date_fin, feries)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc))
 

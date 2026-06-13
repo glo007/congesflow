@@ -83,6 +83,17 @@ def test_manager_valide_et_decremente_le_solde(client):
     assert cp["jours_pris"] == 3
 
 
+def test_stats_reservees_au_manager_et_rh(client):
+    tok_sal = login(client, "salarie@congesflow.fr")
+    assert client.get("/api/stats", headers=auth_header(tok_sal)).status_code == 403
+
+    tok_mgr = login(client, "manager@congesflow.fr")
+    resp = client.get("/api/stats", headers=auth_header(tok_mgr))
+    assert resp.status_code == 200
+    data = resp.json()
+    assert "en_attente" in data and "total" in data and "effectif" in data
+
+
 def test_transition_invalide_renvoie_409(client):
     tok_sal = login(client, "salarie@congesflow.fr")
     lundi = _prochain_lundi()

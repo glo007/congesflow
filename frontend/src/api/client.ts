@@ -2,9 +2,12 @@ import axios from "axios";
 
 const TOKEN_KEY = "congesflow_token";
 
-export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ?? "http://localhost:8000",
-});
+// En prod, Render peut fournir VITE_API_URL sous forme de simple nom d'hote :
+// on prefixe alors par https://. En local, l'URL complete est utilisee telle quelle.
+const rawApiUrl = import.meta.env.VITE_API_URL ?? "http://localhost:8000";
+const baseURL = rawApiUrl && !/^https?:\/\//.test(rawApiUrl) ? `https://${rawApiUrl}` : rawApiUrl;
+
+export const api = axios.create({ baseURL });
 
 // Injecte le JWT dans chaque requete (securite cote client - Bloc 1)
 api.interceptors.request.use((config) => {

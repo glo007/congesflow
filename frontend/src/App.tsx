@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DashboardPage from "./pages/DashboardPage";
 import LoginPage from "./pages/LoginPage";
 import MesDemandesPage from "./pages/MesDemandesPage";
 import ValidationPage from "./pages/ValidationPage";
@@ -22,6 +23,14 @@ export default function App() {
           element={
             <ProtectedRoute roles={["MANAGER", "RH"]}>
               <ValidationPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute roles={["MANAGER", "RH"]}>
+              <DashboardPage />
             </ProtectedRoute>
           }
         />
