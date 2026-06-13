@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CongésFlow — Tableau Kanban (backlog agile)</title>
+<style>
+  :root{ --ink:#1e293b; --muted:#64748b; --line:#e2e8f0; --bg:#f1f5f9; --card:#fff; --brand:#4f46e5; }
+  *{ box-sizing:border-box; }
+  body{ font-family:Inter,system-ui,Arial,sans-serif; background:var(--bg); color:var(--ink); margin:0; padding:32px; }
+  header{ max-width:1100px; margin:0 auto 20px; }
+  h1{ font-size:24px; font-weight:800; margin:0 0 4px; }
+  .sub{ color:var(--muted); font-size:14px; }
+  .board{ max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .col{ background:#e9eef5; border-radius:14px; padding:14px; }
+  .col-h{ display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; }
+  .col-t{ font-size:15px; font-weight:700; display:flex; align-items:center; gap:8px; }
+  .count{ font-size:12px; color:var(--muted); background:#fff; border:1px solid var(--line); border-radius:10px; padding:2px 9px; }
+  .dot{ width:10px; height:10px; border-radius:50%; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px; margin-bottom:10px; box-shadow:0 1px 2px rgba(15,23,42,.05); }
+  .id{ font-size:12px; color:#94a3b8; margin-bottom:3px; }
+  .title{ font-size:14px; line-height:1.4; margin-bottom:10px; }
+  .tags{ display:flex; gap:6px; }
+  .tag{ font-size:11px; font-weight:600; padding:3px 9px; border-radius:10px; }
+  .must{ background:#FEE2E2; color:#991B1B; } .should{ background:#FEF3C7; color:#92400E; } .could{ background:#D1FAE5; color:#065F46; }
+  .pts{ background:#E0E7FF; color:#3730A3; }
+  footer{ max-width:1100px; margin:18px auto 0; color:var(--muted); font-size:13px; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>CongésFlow — Tableau Kanban</h1>
+    <div class="sub">Product backlog (User Stories) — méthodologie agile · priorisation MoSCoW · estimation en story points</div>
+  </header>
+  <div class="board" id="board"></div>
+  <footer id="footer"></footer>
+<script>
+const cols = [
+  { key:"À faire", color:"#94a3b8", items:[
+    ["US12","Calendrier d'équipe et détection des chevauchements","should",8],
+    ["US13","Notifications par e-mail","could",5],
+    ["US14","Gestion des demi-journées","could",3],
+    ["US15","Export comptable (CSV / PDF)","could",5],
+    ["US16","Réinitialisation du mot de passe + refresh token","should",5],
+  ]},
+  { key:"En cours", color:"#f59e0b", items:[
+    ["US11","Déployer l'application en ligne (Render)","should",3],
+  ]},
+  { key:"Terminé", color:"#10b981", items:[
+    ["US1","S'inscrire et se connecter (JWT)","must",5],
+    ["US2","Poser une demande de congé","must",8],
+    ["US3","Consulter mon solde et mes demandes","must",3],
+    ["US4","Annuler une demande","must",3],
+    ["US5","Voir les demandes de mon équipe (manager)","must",5],
+    ["US6","Valider / refuser une demande","must",5],
+    ["US7","Gérer les soldes des employés (RH)","must",5],
+    ["US8","Exclure les jours fériés du calcul","should",3],
+    ["US9","Tableau de bord d'indicateurs","should",5],
+    ["US10","Notifications visuelles (toasts)","should",2],
+  ]},
+];
+const lbl = { must:"Must", should:"Should", could:"Could" };
+const board = document.getElementById("board");
+let totalDone = 0, totalAll = 0;
+cols.forEach(c => {
+  const pts = c.items.reduce((s,i)=>s+i[3],0);
+  totalAll += pts; if (c.key === "Terminé") totalDone = pts;
+  const col = document.createElement("div"); col.className = "col";
+  let h = '<div class="col-h"><span class="col-t"><span class="dot" style="background:'+c.color+'"></span>'+c.key+'</span>'
+        + '<span class="count">'+c.items.length+' · '+pts+' pts</span></div>';
+  c.items.forEach(([id,t,p,sp]) => {
+    h += '<div class="card"><div class="id">'+id+'</div><div class="title">'+t+'</div>'
+       + '<div class="tags"><span class="tag '+p+'">'+lbl[p]+'</span><span class="tag pts">'+sp+' pts</span></div></div>';
+  });
+  col.innerHTML = h; board.appendChild(col);
+});
+document.getElementById("footer").textContent =
+  "Vélocité réalisée : " + totalDone + " points (10 stories terminées) · Reste à faire : " + (totalAll - totalDone) + " points.";
+</script>
+</body>
+</html>

@@ -250,6 +250,31 @@ const chap2 = [
   H3("2.1.3 Outils de suivi et de collaboration"),
   P("Le suivi des tâches a été assuré par un tableau Kanban (colonnes À faire / En cours / En revue / Terminé). Le versionnement du code a suivi une stratégie de branches (voir chapitre 3) et chaque incrément a été validé par l'exécution automatique des tests via l'intégration continue."),
 
+  H3("2.1.4 Adaptation de la méthode agile à un projet individuel"),
+  P("Le projet ayant été mené seul, la méthode agile a été adaptée : il s'agit d'une approche « Scrumban » (un Scrum allégé, piloté au quotidien par un tableau Kanban). J'ai endossé l'ensemble des rôles et remplacé les cérémonies collectives par des équivalents adaptés au travail individuel. Assumer cette adaptation fait partie de la démarche : elle démontre la compréhension des principes agiles autant que leur mise en œuvre."),
+  P("Rôles endossés :", { run: { bold: true } }),
+  tableau(["Rôle Scrum", "Assuré par", "En pratique sur le projet"], [
+    ["Product Owner", "Le candidat", "Rédaction et priorisation du backlog (MoSCoW), arbitrage du périmètre"],
+    ["Scrum Master", "Le candidat", "Organisation du travail, suivi du Kanban, levée des obstacles techniques"],
+    ["Équipe de développement", "Le candidat", "Conception, développement, tests et documentation"],
+  ], [2300, 1900, 4826]),
+  P("Adaptation des cérémonies :", { run: { bold: true } }),
+  tableau(["Cérémonie Scrum (équipe)", "Adaptation au contexte individuel"], [
+    ["Daily meeting", "Point d'avancement personnel quotidien et mise à jour du tableau Kanban"],
+    ["Sprint planning", "Sélection des User Stories de l'itération depuis le backlog priorisé"],
+    ["Sprint review", "Vérification de la « Definition of Done » et démonstration à l'encadrant"],
+    ["Rétrospective", "Bilan personnel écrit en fin de projet (voir ci-dessous)"],
+  ], [3300, 5726]),
+  P("Definition of Done (définition du « terminé ») — une User Story est considérée comme terminée lorsque :", { run: { bold: true } }),
+  bullet("le code de la fonctionnalité est écrit et fonctionnel ;"),
+  bullet("il est couvert par des tests automatisés qui passent ;"),
+  bullet("il est documenté (commentaires utiles, documentation mise à jour si nécessaire) ;"),
+  bullet("il est versionné sur sa branche et intégré après succès de l'intégration continue."),
+  P("Rétrospective de fin de projet :", { run: { bold: true } }),
+  tableau(["Ce qui a bien fonctionné", "Difficultés rencontrées", "Axes d'amélioration"], [
+    ["Découpage en User Stories testées ; la priorisation MoSCoW a permis de tenir le périmètre dans les délais.", "Incompatibilités de versions de dépendances ; cohérence des statuts de demande à garantir.", "Mettre en place le déploiement plus tôt ; ajouter des tests end-to-end (Playwright)."],
+  ], [3008, 3008, 3010]),
+
   H2("2.2 Analyse du besoin (besoins fonctionnels)"),
   P("Les grandes fonctionnalités sont représentées par le diagramme de cas d'utilisation, qui identifie les acteurs et leurs interactions avec le système."),
   diagram("Fig.2", "Diagramme de cas d'utilisation", "02-cas-utilisation.puml"),
