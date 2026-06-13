@@ -9,6 +9,7 @@ const {
 const CONTENT_W = 9026;
 const IMG_DIR = path.join(__dirname, "..", "docs", "diagrammes", "images");
 const SCREEN_DIR = path.join(__dirname, "..", "docs", "screenshots");
+const MAQ_DIR = path.join(__dirname, "..", "docs", "maquettes");
 const pngSize = (file) => { const b = fs.readFileSync(file); return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) }; };
 const border = { style: BorderStyle.SINGLE, size: 1, color: "B7C3D0" };
 const borders = { top: border, bottom: border, left: border, right: border };
@@ -68,6 +69,21 @@ const diagram = (fig, legende, fichier) => {
   return new Table({ width: { size: CONTENT_W, type: WidthType.DXA }, columnWidths: [CONTENT_W],
     rows: [new TableRow({ children: [new TableCell({ borders, width: { size: CONTENT_W, type: WidthType.DXA }, margins: { top: 140, bottom: 140, left: 140, right: 140 },
       children: [imgPara, new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `${fig} — ${legende}`, italics: true, size: 18, color: "44505F" })] })] })] })] });
+};
+
+// Maquette Figma (repli sur le placeholder rose si absente)
+const maquette = (fig, legende, fichier) => {
+  const file = path.join(MAQ_DIR, fichier);
+  if (!fs.existsSync(file)) return figma(`${fig} — ${legende}`);
+  const { w, h } = pngSize(file);
+  const scale = Math.min(560 / w, 620 / h, 1);
+  return new Table({ width: { size: CONTENT_W, type: WidthType.DXA }, columnWidths: [CONTENT_W],
+    rows: [new TableRow({ children: [new TableCell({ borders, width: { size: CONTENT_W, type: WidthType.DXA }, margins: { top: 120, bottom: 120, left: 120, right: 120 },
+      children: [
+        new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 80 },
+          children: [new ImageRun({ type: "png", data: fs.readFileSync(file), transformation: { width: Math.round(w * scale), height: Math.round(h * scale) }, altText: { title: fig, description: legende, name: fichier } })] }),
+        new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ text: `${fig} — ${legende}`, italics: true, size: 18, color: "44505F" })] }),
+      ] })] })] });
 };
 
 // Capture d'ecran reelle de l'application (repli sur le placeholder si absente)
@@ -468,9 +484,9 @@ const chap2 = [
 
   H2("2.8 Conception de l'interface (UI/UX)"),
   P("Les maquettes ont été réalisées sous Figma avant le développement, afin de valider le parcours utilisateur et de réduire les retouches ultérieures. Le parcours principal a été pensé pour être réalisable en moins de trois clics : se connecter, remplir le formulaire, envoyer. Le tableau de bord regroupe sur un même écran les soldes, le formulaire de demande et l'historique, pour limiter la navigation."),
-  figma("Fig.11 — Maquette de l'écran de connexion."),
+  maquette("Fig.11", "Maquette Figma de l'écran de connexion", "connexion.png"),
   P(""),
-  figma("Fig.12 — Maquette du tableau de bord salarié (soldes, formulaire, historique)."),
+  maquette("Fig.12", "Maquette Figma de l'écran « Mes demandes » (soldes, formulaire, historique)", "tableau-de-bord.png"),
   pageBreak(),
 ];
 
