@@ -35,11 +35,10 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
+      # URL publique complète de l'API (la résolution automatique fromService
+      # ne renvoyait que le nom du service, d'où une URL invalide).
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: congesflow-api
-          property: host           # nom d'hôte de l'API (le front ajoute https://)
+        value: https://congesflow-api.onrender.com
     routes:
       # SPA : toutes les routes inconnues renvoient index.html (React Router)
       - type: rewrite
