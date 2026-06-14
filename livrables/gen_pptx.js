@@ -36,7 +36,7 @@ const titleSlide = () => {
     { text: "Soutenance — Titre Professionnel CDA (RNCP niveau 6)\n", options: { fontSize: 16, color: WHITE, bold: true } },
     { text: "Concepteur Développeur d'Applications · ESTIAM · 2025-2026", options: { fontSize: 14, color: "AFC6DC" } },
   ], { x: 0.9, y: 4.5, w: 11.5, h: 1, fontFace: FB });
-  s.addText("[Votre Nom Prénom]  ·  Encadrant : M'hand BOUFALA", { x: 0.9, y: 6.5, w: 11.5, h: 0.5, fontFace: FB, fontSize: 13, color: "8FA9C2" });
+  s.addText("BOUNGOU MBIMI Gloire Bryan  ·  Encadrant : M'hand BOUFALA", { x: 0.9, y: 6.5, w: 11.5, h: 0.5, fontFace: FB, fontSize: 13, color: "8FA9C2" });
   return s;
 };
 

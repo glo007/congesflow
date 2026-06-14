@@ -76,7 +76,7 @@ const doc = new Document({
       new Paragraph({ spacing: { after: 60 }, children: [new TextRun({ text: "Application web de gestion des demandes de congés", size: 22, italics: true, color: "44505F" })] }),
       new Paragraph({ spacing: { after: 200 }, children: [new TextRun({ text: "Présentation du projet — État d'avancement", size: 18, color: "6B7785" })] }),
       tbl(["", ""], [
-        ["Étudiant", "[Votre Nom Prénom]"],
+        ["Étudiant", "BOUNGOU MBIMI Gloire Bryan"],
         ["Formation", "Concepteur Développeur d'Applications (RNCP niveau 6) — ESTIAM"],
         ["Encadrant", "M'hand BOUFALA"],
         ["Date", "Juin 2026"],

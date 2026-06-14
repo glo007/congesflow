@@ -76,9 +76,10 @@ const cover = [
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 100 }, children: [new TextRun({ text: "Concepteur Développeur d'Applications", bold: true, size: 36 })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 700 }, children: [new TextRun({ text: "Niveau 6 (RNCP)", size: 24, italics: true, color: "44505F" })] }),
   tbl(["Rubrique", "Information"], [
-    ["Nom et prénom", "[À COMPLÉTER]"],
-    ["Date de naissance", "[À COMPLÉTER]"],
+    ["Nom et prénom", "BOUNGOU MBIMI Gloire Bryan"],
+    ["Date de naissance", "[votre date de naissance]"],
     ["Centre de formation", "ESTIAM"],
+    ["Période du projet", "Octobre 2025 – juin 2026"],
     ["Session d'examen", "Septembre 2026"],
     ["Projet support", "CongésFlow — Application de gestion des congés"],
   ], [3200, 5826]),
@@ -88,8 +89,8 @@ const cover = [
 
 const honneur = [
   H1("Déclaration sur l'honneur"),
-  P("Je soussigné(e) [Nom Prénom], déclare sur l'honneur que les informations contenues dans ce dossier professionnel sont exactes et que le travail présenté est le résultat de ma propre activité."),
-  P("Fait à [Ville], le [date].", { spacing: { before: 240 } }),
+  P("Je soussigné(e) BOUNGOU MBIMI Gloire Bryan, déclare sur l'honneur que les informations contenues dans ce dossier professionnel sont exactes et que le travail présenté est le résultat de ma propre activité."),
+  P("Fait à Massy, le ____ juin 2026.", { spacing: { before: 240 } }),
   P("Signature : ______________________", { spacing: { before: 360 } }),
   pageBreak(),
 ];

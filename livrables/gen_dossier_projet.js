@@ -135,7 +135,7 @@ const cover = [
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 600 }, children: [new TextRun({ text: "Application web de gestion des demandes de congés", size: 26, italics: true, color: "44505F" })] }),
   tableau(["Rubrique", "Information"], [
     ["Titre visé", "Concepteur Développeur d'Applications (RNCP niveau 6)"],
-    ["Nom et prénom", "[À COMPLÉTER]"],
+    ["Nom et prénom", "BOUNGOU MBIMI Gloire Bryan"],
     ["Classe et spécialité", "CDA — promotion 2025-2026"],
     ["Encadrant", "M'hand BOUFALA"],
     ["Année scolaire", "2025-2026"],

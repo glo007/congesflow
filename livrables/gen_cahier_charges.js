@@ -38,8 +38,8 @@ const cover = [
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 700 }, children: [new TextRun({ text: "Application web de gestion des demandes de congés", size: 24, italics: true, color: "44505F" })] }),
   tbl(["Rubrique", "Information"], [
     ["Projet", "CongésFlow"],
-    ["Maître d'ouvrage", "[Nom — ou ESTIAM, projet de fin d'études]"],
-    ["Maître d'œuvre", "[Votre Nom Prénom]"],
+    ["Maître d'ouvrage", "ESTIAM (projet de fin d'études)"],
+    ["Maître d'œuvre", "BOUNGOU MBIMI Gloire Bryan"],
     ["Titre visé", "Concepteur Développeur d'Applications (RNCP niveau 6)"],
     ["Encadrant", "M'hand BOUFALA — ESTIAM"],
     ["Version", "1.0 — Juin 2026"],
