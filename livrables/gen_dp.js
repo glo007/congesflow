@@ -96,7 +96,7 @@ const honneur = [
 
 const presentation = [
   H1("1. Présentation du candidat et du parcours"),
-  fill("[À COMPLÉTER : présentez votre parcours, votre projet professionnel et le contexte de réalisation du projet — formation à l'ESTIAM, éventuel stage ou alternance.]"),
+  P("Dans le cadre de ma formation de Concepteur Développeur d'Applications à l'ESTIAM, j'ai réalisé le projet CongésFlow comme projet de fin d'études. Ce projet m'a permis de mettre en pratique l'ensemble des compétences acquises durant la formation, de la conception jusqu'à la mise en production en ligne. Il illustre mon projet professionnel : concevoir et développer des applications web complètes, sécurisées et déployées, en maîtrisant aussi bien le front-end que le back-end et les pratiques de qualité (tests, intégration continue, conteneurisation)."),
   H2("Contexte du projet support"),
   P("Le projet CongésFlow a été réalisé en centre de formation. Il s'agit d'une application web de gestion des demandes de congés destinée à une PME : un salarié pose une demande, son manager la valide ou la refuse, et le service RH pilote les soldes. Ce projet a servi de support à la mise en œuvre des compétences des trois activités-types du titre, depuis la conception jusqu'au déploiement conteneurisé."),
   H2("Environnement technique"),
@@ -157,7 +157,7 @@ const at1 = [
     "    return <Navigate to=\"/\" replace />;\n" +
     "  return children;\n" +
     "}"),
-  fill("[À COMPLÉTER éventuellement : ajoutez une difficulté concrète rencontrée sur le front et la manière dont vous l'avez résolue.]"),
+  P("Difficulté rencontrée : la communication entre le front-end (port 5173) et l'API (port 8000) était bloquée par la politique de sécurité CORS du navigateur. Je l'ai résolue en configurant un middleware CORS côté serveur autorisant l'origine du front, puis, lors du déploiement en ligne, en élargissant la règle aux domaines de l'hébergeur."),
   pageBreak(),
 ];
 
@@ -205,7 +205,7 @@ const at2 = [
     "    @property\n" +
     "    def jours_restants(self) -> float:\n" +
     "        return self.jours_acquis - self.jours_pris"),
-  fill("[À COMPLÉTER éventuellement : justifiez un choix de modélisation, par exemple un solde par employé / type / année.]"),
+  P("Choix de modélisation : le solde de congés est identifié par la combinaison employé / type d'absence / année. Ce choix permet de gérer plusieurs types de congés (congés payés, RTT…) indépendamment, de conserver l'historique année par année, et de garantir l'unicité de chaque solde grâce à une contrainte UNIQUE portant sur ces trois colonnes."),
   pageBreak(),
 ];
 
@@ -248,7 +248,7 @@ const at3 = [
     "docker compose up --build     # db + backend + frontend\n" +
     "cd backend && pytest -q       # 19 tests back-end\n" +
     "cd frontend && npm test       # 2 tests front-end"),
-  fill("[À COMPLÉTER éventuellement : décrivez la mise en place de la machine à états des demandes et son intérêt pour la cohérence métier.]"),
+  P("Mise en place de la machine à états : le statut d'une demande ne peut évoluer que selon des transitions autorisées (SOUMISE → VALIDÉE / REFUSÉE / ANNULÉE, et VALIDÉE → ANNULÉE). Centraliser ces règles dans une fonction dédiée garantit la cohérence métier : il devient impossible, par exemple, de valider une demande déjà refusée, et toute transition interdite renvoie une erreur 409. C'est un point fort du projet en matière de fiabilité."),
   pageBreak(),
 ];
 

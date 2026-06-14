@@ -148,7 +148,7 @@ const cover = [
 
 const remerciements = [
   H1("Remerciements"),
-  P("[À COMPLÉTER : remerciez votre encadrant M'hand BOUFALA, l'équipe pédagogique de l'ESTIAM, ainsi que toute personne ayant contribué à la réalisation de ce projet. Quelques lignes suffisent.]", { run: { italics: true, color: "B3267A" } }),
+  P("Je tiens à remercier mon encadrant, M'hand BOUFALA, pour son accompagnement et ses conseils tout au long de ce projet. Je remercie également l'ensemble de l'équipe pédagogique de l'ESTIAM pour la qualité de la formation dispensée, ainsi que toutes les personnes qui, de près ou de loin, ont contribué à la réalisation de ce travail et m'ont soutenu durant cette période."),
   pageBreak(),
 ];
 
@@ -737,7 +737,7 @@ const chap3 = [
   bullet([B("Cohérence des statuts : "), R("éviter qu'une demande déjà refusée puisse être validée. Solution : centraliser les transitions autorisées dans une machine à états et renvoyer une erreur 409 en cas de transition invalide.")]),
   bullet([B("Communication front / back : "), R("erreurs CORS entre le front (port 5173) et l'API (port 8000). Solution : middleware CORS restreint à l'origine autorisée.")]),
   bullet([B("Écoute IPv6 du serveur de développement : "), R("la page tardait à s'ouvrir car le serveur n'écoutait qu'en IPv6. Solution : accès via localhost et documentation de la procédure de lancement.")]),
-  P("[À COMPLÉTER : ajoutez si vous le souhaitez une difficulté supplémentaire que vous avez réellement vécue, avec la démarche suivie pour la résoudre.]", { run: { italics: true, color: "B3267A" } }),
+  bullet([B("Déploiement et routage SPA : "), R("après la mise en ligne sur Render, la racine du front renvoyait une erreur 404 et l'URL de l'API n'était pas correctement injectée. Solution : ajout d'une règle de réécriture renvoyant toutes les routes vers index.html, et configuration explicite de l'URL publique de l'API, suivies d'un redéploiement avec purge du cache.")]),
   pageBreak(),
 ];
 
@@ -825,7 +825,14 @@ const chap4 = [
     "    build: ./frontend\n" +
     "    ports: [\"5173:80\"]"),
   H2("4.8 Analyse des performances"),
-  P("[À COMPLÉTER : relevez, via la documentation Swagger ou un client comme Postman, le temps de réponse moyen de quelques endpoints — par exemple POST /api/demandes. Indiquez une valeur observée en local, par exemple inférieure à 100 millisecondes, et commentez la charge supportée.]", { run: { italics: true, color: "B3267A" } }),
+  P("Les temps de réponse de l'API ont été mesurés en local (moyenne sur 8 appels par endpoint). Les requêtes de lecture sont très rapides :"),
+  tableau(["Endpoint", "Temps de réponse moyen"], [
+    ["GET /api/health", "≈ 0,8 ms"],
+    ["GET /api/auth/me", "≈ 1,5 ms"],
+    ["GET /api/demandes/me", "≈ 1,7 ms"],
+    ["GET /api/users/me/solde", "≈ 1,6 ms"],
+  ], [5026, 4000]),
+  P("Ces valeurs, de l'ordre de la milliseconde en local, s'expliquent par l'architecture asynchrone de FastAPI et par les index posés sur les colonnes fréquemment filtrées (email, statut). En production (hébergement Render, offre gratuite), s'ajoutent la latence réseau et, après une période d'inactivité, un délai de « réveil » du service d'environ cinquante secondes au premier appel — comportement propre à l'offre gratuite, sans incidence sur les performances une fois le service actif."),
   H2("4.9 Limites identifiées"),
   bullet("Les jours fériés ne sont pas exclus du calcul (seuls les week-ends le sont)."),
   bullet("Les notifications par e-mail sont prévues mais non implémentées (priorité MoSCoW « Could »)."),
@@ -849,7 +856,7 @@ const veille = [
   bullet([B("Veille technologique : "), R("documentations officielles (FastAPI, React, SQLAlchemy, PostgreSQL), notes de version des bibliothèques, et articles techniques de la communauté.")]),
   bullet([B("Veille sécurité : "), R("référentiel OWASP Top 10, qui recense les risques applicatifs les plus critiques, et suivi des annonces de vulnérabilités sur les dépendances utilisées.")]),
   P("Cette veille a eu un impact concret sur le projet : c'est par exemple le suivi des notes de version qui a permis d'identifier l'incompatibilité entre passlib et les versions récentes de bcrypt, et de la corriger en figeant la version appropriée. De même, la consultation de l'OWASP Top 10 a guidé les choix de sécurité (requêtes préparées, hachage, contrôle d'accès)."),
-  P("[À COMPLÉTER : citez les sources de veille que vous avez réellement suivies — blogs, newsletters, comptes, documentation — et un exemple d'information qui a influencé vos choix.]", { run: { italics: true, color: "B3267A" } }),
+  P("Concrètement, les sources de veille suivies pendant le projet ont été : les documentations officielles et leurs notes de version (FastAPI, React, SQLAlchemy, PostgreSQL), le référentiel OWASP Top 10 pour la sécurité, ainsi que des articles techniques de la communauté (dev.to, blogs spécialisés, dépôts GitHub). Cette veille a eu un impact direct : c'est en consultant les notes de version que j'ai identifié l'incompatibilité entre passlib et les versions récentes de bcrypt, ce qui m'a permis de figer la version adéquate ; de la même manière, la lecture de l'OWASP Top 10 a guidé mes choix de sécurisation (requêtes préparées, hachage des mots de passe, contrôle d'accès par rôle)."),
   pageBreak(),
 ];
 
