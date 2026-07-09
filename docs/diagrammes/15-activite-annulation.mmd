@@ -1,0 +1,12 @@
+%% Diagramme d'activité - Cas d'utilisation : Annuler une demande
+flowchart TD
+    A([Début]) --> B[Le salarié sélectionne une de ses demandes]
+    B --> C{Statut = SOUMISE ou VALIDEE ?}
+    C -- Non --> E1[Annulation impossible]
+    C -- Oui --> D{La demande était-elle VALIDEE ?}
+    D -- Oui --> F[Restitution du solde]
+    D -- Non --> G[Aucune restitution]
+    F --> H[Statut = ANNULEE]
+    G --> H
+    H --> Z([Fin])
+    E1 --> Z

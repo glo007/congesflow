@@ -256,9 +256,9 @@ const at3 = [
 const annexes = [
   H1("6. Titres, diplômes et annexes"),
   H2("Titres et diplômes"),
-  fill("[À COMPLÉTER : listez vos diplômes et certifications éventuels.]"),
+  P("Section facultative — à renseigner si vous détenez des titres, diplômes ou certifications professionnelles que vous souhaitez porter à la connaissance du jury.", { run: { italics: true, color: "6B7785" } }),
   H2("Curriculum Vitae"),
-  fill("[À COMPLÉTER : joindre votre CV.]"),
+  P("Section facultative — un curriculum vitae peut être joint au dossier.", { run: { italics: true, color: "6B7785" } }),
   H2("Annexes techniques"),
   li("Dépôt GitHub du projet : https://github.com/glo007/congesflow"),
   li("Application déployée en ligne : https://congesflow-web.onrender.com"),

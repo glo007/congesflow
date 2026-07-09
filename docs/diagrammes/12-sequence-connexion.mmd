@@ -1,0 +1,18 @@
+%% Diagramme de séquence - Cas d'utilisation : S'authentifier
+sequenceDiagram
+    actor Visiteur
+    participant Front as Front React
+    participant API as API FastAPI
+    participant DB as PostgreSQL
+    Visiteur->>Front: Saisit email et mot de passe
+    Front->>API: POST /api/auth/login
+    API->>DB: SELECT employe WHERE email
+    DB-->>API: Employé (ou aucun)
+    alt Identifiants valides
+        API->>API: Vérifie le hachage bcrypt
+        API-->>Front: 200 + jeton JWT signé
+        Front-->>Visiteur: Accès à son espace
+    else Identifiants invalides
+        API-->>Front: 401 Identifiants invalides
+        Front-->>Visiteur: Message d'erreur
+    end

@@ -1,0 +1,18 @@
+%% Diagramme d'activité - Cas d'utilisation : Valider ou refuser une demande
+flowchart TD
+    A([Début]) --> B[Le manager consulte les demandes de son équipe]
+    B --> C[Il choisit Valider ou Refuser]
+    C --> D{Demandeur = le manager lui-même ?}
+    D -- Oui --> E1[Erreur 403 : pas de validation de sa propre demande]
+    D -- Non --> F{Statut = SOUMISE ?}
+    F -- Non --> E2[Erreur 409 : transition invalide]
+    F -- Oui --> G{Décision}
+    G -- Valider --> H{Solde suffisant ?}
+    H -- Non --> E3[Erreur 400 : solde insuffisant]
+    H -- Oui --> I[Décrémente le solde puis statut = VALIDEE]
+    G -- Refuser --> J[Statut = REFUSEE avec commentaire]
+    I --> Z([Fin])
+    J --> Z
+    E1 --> Z
+    E2 --> Z
+    E3 --> Z

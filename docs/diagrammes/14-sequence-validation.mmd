@@ -1,0 +1,21 @@
+%% Diagramme de séquence - Cas d'utilisation : Valider une demande
+sequenceDiagram
+    actor Manager
+    participant Front as Front React
+    participant API as API FastAPI
+    participant Sec as Sécurité (JWT/RBAC)
+    participant DB as PostgreSQL
+    Manager->>Front: Clique sur Valider
+    Front->>API: PATCH /api/demandes/{id}/valider
+    API->>Sec: Vérifie le rôle et la séparation des responsabilités
+    Sec-->>API: Autorisé
+    API->>DB: SELECT demande et solde
+    DB-->>API: demande, solde
+    alt Transition autorisée et solde suffisant
+        API->>DB: UPDATE statut = VALIDEE, mise à jour du solde
+        DB-->>API: OK
+        API-->>Front: 200 (demande validée)
+        Front-->>Manager: Confirmation (toast)
+    else Transition invalide
+        API-->>Front: 409 Transition invalide
+    end

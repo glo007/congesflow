@@ -1,0 +1,12 @@
+%% Diagramme d'activité - Cas d'utilisation : S'authentifier
+flowchart TD
+    A([Début]) --> B[Le visiteur saisit son email et son mot de passe]
+    B --> C{Compte existant ?}
+    C -- Non --> E1[Erreur 401 : identifiants invalides]
+    C -- Oui --> D{Mot de passe correct ?}
+    D -- Non --> E1
+    D -- Oui --> F[Génération d'un jeton JWT signé]
+    F --> G[Le client stocke le jeton]
+    G --> H[Accès à l'application selon le rôle]
+    H --> Z([Fin])
+    E1 --> Z
