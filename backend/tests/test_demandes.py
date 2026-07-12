@@ -1,14 +1,23 @@
 """Tests d'integration du parcours principal (API + base de donnees)."""
 from datetime import date, timedelta
 
+from app.business.conges import jours_feries_france
 from tests.conftest import auth_header, login
 
 
 def _prochain_lundi() -> date:
+    """Retourne un lundi futur dont la fenetre lundi->mercredi ne contient
+    aucun jour ferie (pour que le decompte des jours ouvres vaille bien 3,
+    independamment de la date d'execution des tests)."""
     d = date.today()
-    while d.weekday() != 0:
-        d += timedelta(days=1)
-    return d
+    while True:
+        while d.weekday() != 0:
+            d += timedelta(days=1)
+        feries = jours_feries_france(d.year) | jours_feries_france((d + timedelta(days=2)).year)
+        fenetre = [d + timedelta(days=i) for i in range(3)]
+        if not any(j in feries for j in fenetre):
+            return d
+        d += timedelta(days=7)
 
 
 def test_login_invalide_renvoie_401(client):
